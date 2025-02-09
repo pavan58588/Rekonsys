@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["localhost", "pbs.twimg.com", "cdn.sanity.io"],
+    domains: ["localhost", "pbs.twimg.com", "cdn.sanity.io", "images.unsplash.com"],
     remotePatterns: [
       {
         protocol: "https",
@@ -12,9 +12,4 @@ const nextConfig = {
   },
 };
 
-module.exports = {
-  ...nextConfig,
-  images: {
-    domains: ['localhost', 'cdn.sanity.io', 'pbs.twimg.com'], // Add the hostname here
-  },
-};
+module.exports = nextConfig;

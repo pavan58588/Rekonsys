@@ -1,14 +1,34 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SectionTitle from "../Common/SectionTitle";
-// import ModalVideo from "react-modal-video";
-import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 
+// Import modal video styles at the module level
+import "react-modal-video/css/modal-video.css";
+
+const ModalVideo = dynamic<ModalVideoProps>(() => 
+  import("react-modal-video").then((mod) => mod.default), 
+  { ssr: false }
+);
+
+type ModalVideoProps = {
+  channel: string;
+  autoplay?: boolean;
+  start?: boolean;
+  isOpen: boolean;
+  videoId: string;
+  onClose: () => void;
+};
 
 const Video = () => {
   const [isOpen, setOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <section className="relative z-10 py-16 md:py-20 lg:py-28">
@@ -50,14 +70,18 @@ const Video = () => {
         </div>
       </div>
 
-      {/* <ModalVideo
-        channel="youtube"
-        autoplay={true}
-        start={true}
-        isOpen={isOpen}
-        videoId="#"
-        onClose={() => setOpen(false)}
-      /> */}
+      {isMounted && (
+        <div key="modal-video">
+          <ModalVideo
+            channel="youtube"
+            autoplay={true}
+            start={true}
+            isOpen={isOpen}
+            videoId="your_video_id_here"
+            onClose={() => setOpen(false)}
+          />
+        </div>
+      )}
 
       <div className="absolute bottom-0 left-0 right-0 z-[-1] h-full w-full bg-[url(/images/video/shape.svg)] bg-cover bg-center bg-no-repeat"></div>
     </section>
